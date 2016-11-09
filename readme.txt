@@ -47,3 +47,4 @@ git commit命令执行成功后会告诉你，1个文件被改动（我们新添
 $ git add file1.txt
 $ git add file2.txt file3.txt
 $ git commit -m "add 3 files."
+3、修回稿文件
