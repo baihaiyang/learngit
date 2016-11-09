@@ -54,8 +54,8 @@ $ git push -u origin master
 （第一次推送master分支的所有内容，此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改）
 $ git clone git@github.com:whiteoceans/gitskills.git
 （从远程库克隆岛本地库）
-
-
+zheshiyixiexiadsfsdflksdjfkl;sk;ldjflksdjfl
+gsdfg
 
 
 
