@@ -48,9 +48,12 @@ $ git reset HEAD readme.txt
 
 场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库
 
-
-
-
+$ git remote add origin git@github.com:whiteoceans/learngit.git
+（关联一个远程库）
+$ git push -u origin master
+（第一次推送master分支的所有内容，此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改）
+$ git clone git@github.com:whiteoceans/gitskills.git
+（从远程库克隆岛本地库）
 
 
 
