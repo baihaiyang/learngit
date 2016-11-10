@@ -124,58 +124,87 @@ Git分支
 
 	删除分支：git branch -d <name>
 3、两个分支都有修改提交冲突以后的解决办法
+	（如果在新的分支修改了以后提交。回到主分支以后再次修改提交，就会产生冲突，然后需要在主分支对文件进行修改，修改以后再次提交保存，删除新分支即可，详细步骤如下：）
 	准备新的feature1分支，继续我们的新分支开发：
-
 	$ git checkout -b feature1
-	Switched to a new branch 'feature1'
-	修改readme.txt最后一行，改为：
-
-	Creating a new branch is quick AND simple.
+	（创建并切换到新的分支，并且对文件进行修改）
 	在feature1分支上提交：
-
 	$ git add readme.txt 
 	$ git commit -m "AND simple"
-	[feature1 75a857c] AND simple
-	 1 file changed, 1 insertion(+), 1 deletion(-)
 	切换到master分支：
-
 	$ git checkout master
-	Switched to branch 'master'
-	Your branch is ahead of 'origin/master' by 1 commit.
-	Git还会自动提示我们当前master分支比远程的master分支要超前1个提交。
-
-	在master分支上把readme.txt文件的最后一行改为：
-
-	Creating a new branch is quick & simple.
+		Switched to branch 'master'
+		Your branch is ahead of 'origin/master' by 1 commit.
+		Git还会自动提示我们当前master分支比远程的master分支要超前1个提交。
+	在master分支上再次对文件进行修改
 	提交：
-
 	$ git add readme.txt 
 	$ git commit -m "& simple"
-	[master 400b400] & simple
-	 1 file changed, 1 insertion(+), 1 deletion(-)
-	现在，master分支和feature1分支各自都分别有新的提交，变成了这样：
-
-	git-br-feature1
-
-	这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
-
+		[master 400b400] & simple
+		 1 file changed, 1 insertion(+), 1 deletion(-)
+		现在，master分支和feature1分支各自都分别有新的提交，变成了这样：
+		git-br-feature1
+		这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
 	$ git merge feature1
-	Auto-merging readme.txt
-	CONFLICT (content): Merge conflict in readme.txt
-	Automatic merge failed; fix conflicts and then commit the result.
-	果然冲突了！Git告诉我们，readme.txt文件存在冲突，必须手动解决冲突后再提交。git status也可以告诉我们冲突的文件：
-
+		Auto-merging readme.txt
+		CONFLICT (content): Merge conflict in readme.txt
+		Automatic merge failed; fix conflicts and then commit the result.
+		果然冲突了！Git告诉我们，readme.txt文件存在冲突，必须手动解决冲突后再提交。git status也可以告诉我们冲突的文件：
 	$ git status
-	# On branch master
-	# Your branch is ahead of 'origin/master' by 2 commits.
-	#
-	# Unmerged paths:
-	#   (use "git add/rm <file>..." as appropriate to mark resolution)
-	#
-	#       both modified:      readme.txt
-	#
-	no changes added to commit (use "git add" and/or "git commit -a")
+		# On branch master
+		# Your branch is ahead of 'origin/master' by 2 commits.
+		#
+		# Unmerged paths:
+		#   (use "git add/rm <file>..." as appropriate to mark resolution)
+		#
+		#       both modified:      readme.txt
+		#
+		no changes added to commit (use "git add" and/or "git commit -a")
+	我们可以直接查看readme.txt的内容：
+	$ cat readme.txt
+		Git is a distributed version control system.
+		Git is free software distributed under the GPL.
+		Git has a mutable index called stage.
+		Git tracks changes of files.
+		<<<<<<< HEAD
+		Creating a new branch is quick & simple.
+		=======
+		Creating a new branch is quick AND simple.
+		>>>>>>> feature1
+	Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容
+	我们进行修改，保存再提交：
+	$ git add readme.txt 
+	$ git commit -m "conflict fixed"
+		[master 59bc1cb] conflict fixed
+	用带参数的git log也可以看到分支的合并情况：
+	$ git log --graph --pretty=oneline --abbrev-commit
+	（查看分支的合并情况）
+		*   bb51c4c all change
+		|\
+		| * 3e806dc featurel add something
+		* | cf8dd28 master change something
+		|/
+		* c97e987 add something 18:00
+		* 24a7886 add somrtihin dev
+		* 32d0b17 add something
+		* ae78d38 add test too
+		* 6bb4d03 remove test too
+		* 9a82cee add test
+		* 1661f1d remove test.txt
+		* eeeccaa updata one
+		* cd1c9d3 add test.txt
+		* 9c4408f update three
+		* cba7d62 update two
+		* a3532f9 update this file
+		* 4edcb4e update too
+		* b55277d update a file
+		* ca535db create a file
 
+	最后，删除feature1分支：
+	$ git branch -d feature1
+	（删除分支）
+		Deleted branch feature1 (was 75a857c).
+	工作完成。
 
 
 
