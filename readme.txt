@@ -123,7 +123,57 @@ Git分支
 	合并某分支到当前分支：git merge <name>
 
 	删除分支：git branch -d <name>
+准备新的feature1分支，继续我们的新分支开发：
 
+$ git checkout -b feature1
+Switched to a new branch 'feature1'
+修改readme.txt最后一行，改为：
+
+Creating a new branch is quick AND simple.
+在feature1分支上提交：
+
+$ git add readme.txt 
+$ git commit -m "AND simple"
+[feature1 75a857c] AND simple
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+切换到master分支：
+
+$ git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+Git还会自动提示我们当前master分支比远程的master分支要超前1个提交。
+
+在master分支上把readme.txt文件的最后一行改为：
+
+Creating a new branch is quick & simple.
+提交：
+
+$ git add readme.txt 
+$ git commit -m "& simple"
+[master 400b400] & simple
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+现在，master分支和feature1分支各自都分别有新的提交，变成了这样：
+
+git-br-feature1
+
+这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
+
+$ git merge feature1
+Auto-merging readme.txt
+CONFLICT (content): Merge conflict in readme.txt
+Automatic merge failed; fix conflicts and then commit the result.
+果然冲突了！Git告诉我们，readme.txt文件存在冲突，必须手动解决冲突后再提交。git status也可以告诉我们冲突的文件：
+
+$ git status
+# On branch master
+# Your branch is ahead of 'origin/master' by 2 commits.
+#
+# Unmerged paths:
+#   (use "git add/rm <file>..." as appropriate to mark resolution)
+#
+#       both modified:      readme.txt
+#
+no changes added to commit (use "git add" and/or "git commit -a")
 
 
 
